@@ -10,59 +10,65 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+    final scale = size.width / 450;
+
     return Scaffold(
       resizeToAvoidBottomInset: true,
       body: Center(
-
         // This wrap the content so that it can be moved without being out of the screen
-
         child: SingleChildScrollView(
-
+          padding: EdgeInsets.symmetric(vertical: 20 * scale), // TODO
           // This is all the content which is wrapped inside the 'SingleChildScrollView'
-
           child: Column(
-
             // Align all the items to the center
-
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
 
             // Array which contains every screen´s component
-
             children: [
-              SizedBox(width: 200, height: 40),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 32 * scale),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Bienvenido a',
+                      style: TextStyle(
+                        fontSize: 30 * scale,
+                        fontWeight: FontWeight.w900,
+                        color: Color.fromRGBO(97, 92, 233, 1.0),
+                      ),
+                    ),
 
-              Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Bienvenido a',
-                    style: TextStyle(
-                      fontSize: 40,
-                      fontWeight: FontWeight.w900,
-                      color: Color.fromRGBO(97, 92, 233, 1.0),
-                    ),
-                  ),
-                  Text(
-                    'Eventify',
-                    style: TextStyle(
-                      fontSize: 40,
-                      fontWeight: FontWeight.w900,
-                      color: Color.fromRGBO(252, 149, 54, 1.0),
-                    ),
-                  ),
-                ],
+                    Text(
+                      'Eventify',
+                      style: TextStyle(
+                        fontSize: 30 * scale,
+                        fontWeight: FontWeight.w900,
+                        color: Color.fromRGBO(252, 149, 54, 1.0)
+                      ),
+                    )
+                  ],
+                ),
               ),
 
-              SizedBox(width: 200, height: MediaQuery.of(context).size.height * 0.05),
+              SizedBox(
+                height: 40 * scale,
+              ),
 
-              Image.asset('lib/assets/images/login_icon.png'),
-
-              SizedBox(width: 200, height: MediaQuery.of(context).size.height * 0.05),
+              Image.asset(
+                'lib/assets/images/login_icon.png',
+                width: 150 * scale,
+                height: 150 * scale,
+              ),
 
               SizedBox(
-                width: MediaQuery.of(context).size.width * 0.70,
+                height: 30 * scale,
+              ),
+
+              SizedBox(
+                width: size.width * 0.75,
                 child: TextFormField(
                   decoration: InputDecoration(
                     labelText: 'Nombre de usuario',
@@ -81,10 +87,10 @@ class _LoginPageState extends State<LoginPage> {
                 ),
               ),
 
-              SizedBox(width: 200, height: 20),
+              SizedBox(height: 16 * scale),
 
               SizedBox(
-                width: MediaQuery.of(context).size.width * 0.70,
+                width: size.width * 0.75,
                 child: TextFormField(
                   obscureText: true,
                   decoration: InputDecoration(
@@ -104,11 +110,13 @@ class _LoginPageState extends State<LoginPage> {
                 ),
               ),
 
-              SizedBox(width: 200, height: MediaQuery.of(context).size.height * 0.05),
+              SizedBox(
+                height: 30 * scale,
+              ),
 
               SizedBox(
-                width: MediaQuery.of(context).size.width * 0.70,
-                height: 60,
+                width:size.width * 0.75,
+                height: 70 * scale,
                 child: DecoratedBox(
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
@@ -135,7 +143,7 @@ class _LoginPageState extends State<LoginPage> {
                       'Iniciar sesion',
                       style: TextStyle(
                         color: Colors.white,
-                        fontSize: 20,
+                        fontSize: 15 * scale,
                         fontWeight: FontWeight.w900,
                       ),
                     ),
@@ -143,10 +151,12 @@ class _LoginPageState extends State<LoginPage> {
                 ),
               ),
 
-              SizedBox(width: 200, height: MediaQuery.of(context).size.height * 0.02),
+              SizedBox(
+                height: 30 * scale,
+              ),
 
               SizedBox(
-                width: MediaQuery.of(context).size.width * 0.70,
+                width: size.width * 0.75,
                 child: Divider(
                   height: 20,
                   thickness: 1,
@@ -158,7 +168,7 @@ class _LoginPageState extends State<LoginPage> {
                 '¿No tienes cuenta?',
                 style: TextStyle(
                   color: Color.fromRGBO(97, 92, 233, 1.0),
-                  fontSize: 20,
+                  fontSize: 15 * scale,
                 ),
               ),
 
@@ -170,7 +180,7 @@ class _LoginPageState extends State<LoginPage> {
                   'Regístrate',
                   style: TextStyle(
                     color: Color.fromRGBO(252, 149, 54, 1.0),
-                    fontSize: 20,
+                    fontSize: 18 * scale,
                     fontWeight: FontWeight.w900,
                   ),
                 ),
@@ -178,7 +188,6 @@ class _LoginPageState extends State<LoginPage> {
             ],
           ),
         ),
-
       ),
     );
   }
