@@ -11,7 +11,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    final scale = size.width / 450;
+    final scale = size.width / 400;
 
     return Scaffold(
       resizeToAvoidBottomInset: true,
@@ -35,7 +35,7 @@ class _LoginPageState extends State<LoginPage> {
                     Text(
                       'Bienvenido a',
                       style: TextStyle(
-                        fontSize: 30 * scale,
+                        fontSize: 35 * scale,
                         fontWeight: FontWeight.w900,
                         color: Color.fromRGBO(97, 92, 233, 1.0),
                       ),
@@ -44,7 +44,7 @@ class _LoginPageState extends State<LoginPage> {
                     Text(
                       'Eventify',
                       style: TextStyle(
-                        fontSize: 30 * scale,
+                        fontSize: 35 * scale,
                         fontWeight: FontWeight.w900,
                         color: Color.fromRGBO(252, 149, 54, 1.0)
                       ),
@@ -143,7 +143,7 @@ class _LoginPageState extends State<LoginPage> {
                       'Iniciar sesion',
                       style: TextStyle(
                         color: Colors.white,
-                        fontSize: 15 * scale,
+                        fontSize: 20 * scale,
                         fontWeight: FontWeight.w900,
                       ),
                     ),
