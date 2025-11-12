@@ -1,3 +1,4 @@
+import 'package:eventify/views/register_page.dart';
 import 'package:flutter/material.dart';
 
 class LoginPage extends StatefulWidget {
@@ -58,7 +59,7 @@ class _LoginPageState extends State<LoginPage> {
               ),
 
               Image.asset(
-                'lib/assets/images/login_icon.png',
+                'lib/assets/images/app_icon.png',
                 width: 150 * scale,
                 height: 150 * scale,
               ),
@@ -174,7 +175,10 @@ class _LoginPageState extends State<LoginPage> {
 
               TextButton(
                 onPressed: () {
-                  // TODO: Here the action when the button is pressed
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => RegisterPage()) 
+                  );
                 },
                 child: Text(
                   'Regístrate',
