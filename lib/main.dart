@@ -1,4 +1,4 @@
-import 'package:eventify/views/login_page.dart';
+import 'package:eventify/views/login/login_page.dart';
 import 'package:flutter/material.dart';
 
 // This is the entry point of the application
