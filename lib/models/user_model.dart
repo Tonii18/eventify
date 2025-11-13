@@ -1,8 +1,8 @@
 class UserModel {
-  final int id;
+  final int? id;
   final String name;
   final String email;
-  final String? password;
+  final String password;
   final String role;
   final String? token;
   final String? emailVerifiedAt;
@@ -11,10 +11,10 @@ class UserModel {
   final String? code;
 
   UserModel({
-    required this.id,
+    this.id,
     required this.name,
     required this.email,
-    this.password,
+    required this.password,
     required this.role,
     this.token,
     this.emailVerifiedAt,
@@ -23,18 +23,14 @@ class UserModel {
     this.code,
   });
 
+  //User to create in Login form
   factory UserModel.fromJson(Map<String, dynamic> json) {
-    String role = json['role'] ?? 'u';
-    if (!['a', 'u', 'o'].contains(role)) {
-      role = 'u';
-    }
-
-    //User to create in Login form
     return UserModel(
       id: json['id'],
       name: json['name'],
       email: json['email'],
-      role: role,
+      password: json['password'],
+      role: json['role'],
       token: json['token'], // only in login
       emailVerifiedAt: json['email_verified_at'],
       actived: json['actived'],

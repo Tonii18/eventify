@@ -9,7 +9,7 @@ class AuthService {
 
   static const String baseURL = 'https://eventify.iaknowhow.es/public/api/';
 
-  //Service Register
+  // TODO : Service Register
   Future<UserModel?> registerUser(UserModel userModel) async {
     final response = await http.post(
       Uri.parse('${baseURL}register'),
@@ -32,33 +32,37 @@ class AuthService {
     }
   }
 
-  //Service Login
-  Future<UserModel?> loginUser(UserModel userModel) async {
-    final response = await http.post(
-      Uri.parse('${baseURL}login'),
-      headers: {'Accept': 'application/json'},
-      body: {'email': userModel.email, 'password': userModel.password!},
-    );
+  // TODO : Service Login
+  Future<UserModel?> loginUser(String email, String password) async {
+    try {
+      final response = await http.post(
+        Uri.parse('${baseURL}login'),
+        headers: {'Accept': 'application/json'},
+        body: {'email': email, 'password': password},
+      );
 
-    final jsonResponse = jsonDecode(response.body);
+      final jsonResponse = jsonDecode(response.body);
 
-    if (response.statusCode == 200 && jsonResponse['success'] == true) {
-      final data = jsonResponse['data'];
-      final token = data['token'];
+      if (response.statusCode == 200 && jsonResponse['success'] == true) {
+        final data = jsonResponse['data'];
+        final token = data['token'];
 
-      await TokenService.saveToken(token);
+        await TokenService.saveToken(token);
 
-      return UserModel.fromJson(data);
-    } else {
-      logger.e('Login failed: ${jsonResponse['data']['error']}');
+        return UserModel.fromJson(data);
+      } else {
+        logger.e('Login failed: ${jsonResponse['data']['error']}');
+        return null;
+      }
+    } catch (e) {
+      logger.e('Error in loginUser: $e');
       return null;
     }
   }
 
-  //Service Logout
+  // TODO : Service Logout
   Future<void> logout() async {
     await TokenService.deleteToken();
     logger.i('Token eliminado. Sesión cerrada.');
   }
-
 }
