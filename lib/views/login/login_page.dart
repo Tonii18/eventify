@@ -1,3 +1,5 @@
+import 'package:eventify/providers/auth_provider.dart';
+import 'package:eventify/views/admin/admin_menu.dart';
 import 'package:eventify/views/login/components/login_footer.dart';
 import 'package:eventify/views/login/components/login_header.dart';
 import 'package:eventify/views/widgets/elevated_button.dart';
@@ -12,6 +14,10 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
 
@@ -45,6 +51,7 @@ class _LoginPageState extends State<LoginPage> {
                 label: 'Correo electrónico', 
                 color: Color.fromRGBO(180, 180, 180, 1.0), 
                 isPassword: false,
+                textController: emailController,
               ),
 
               SizedBox(height: 16 * scale),
@@ -55,6 +62,7 @@ class _LoginPageState extends State<LoginPage> {
                 label: 'Contraseña', 
                 color: Color.fromRGBO(180, 180, 180, 1.0),
                 isPassword: true,
+                textController: passwordController,
               ),
 
               SizedBox(
@@ -74,6 +82,11 @@ class _LoginPageState extends State<LoginPage> {
                   Color.fromRGBO(97, 92, 233, 1.0),
                   Color.fromRGBO(55, 52, 131, 1.0)
                 ],
+                onPressed: (){
+                  setState(() {
+                    loginUser();
+                  });
+                },
               ),
 
               SizedBox(
@@ -91,4 +104,18 @@ class _LoginPageState extends State<LoginPage> {
       ),
     );
   }
+
+  Future<void> loginUser() async {
+    String email = emailController.text;
+    String password = passwordController.text;
+
+    AuthProvider authProvider = AuthProvider();
+    
+    if(await authProvider.login(email, password)){
+      if(authProvider.user?.role == 'a'){
+        Navigator.push(context,MaterialPageRoute(builder: (context) => AdminMenu()));
+      }
+    }
+  }
+
 }

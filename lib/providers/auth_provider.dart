@@ -15,7 +15,8 @@ class AuthProvider extends ChangeNotifier {
   String? get errorMessage => _errorMessage;
   UserModel? get user => _user;
 
-  // TODO: Login Provider
+  // Login Provider
+
   Future<bool> login(String email, String password) async {
     _isLoading = true;
     notifyListeners();
@@ -36,7 +37,8 @@ class AuthProvider extends ChangeNotifier {
     }
   }
 
-  // TODO : Register Provider
+  // Register Provider
+
   Future<bool> register(
     String name,
     String email,
@@ -69,7 +71,8 @@ class AuthProvider extends ChangeNotifier {
     }
   }
 
-  // TODO : Load User Storage Provider
+  // Load User Storage Provider
+  
   Future<bool> loadUserFromStorage() async {
     final token = await TokenService.getToken();
     final userId = await TokenService.getUserId();

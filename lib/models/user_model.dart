@@ -1,14 +1,14 @@
 class UserModel {
-   int? id;
-   String name;
-   String email;
-   String password;
-   String role;
-   String? token;
-   String? emailVerifiedAt;
-   int? actived;
-   int? deleted;
-   String? code;
+  int? id;
+  String name;
+  String email;
+  String password;
+  String role;
+  String? token;
+  String? emailVerifiedAt;
+  int? actived;
+  int? deleted;
+  String? code;
 
   UserModel({
     this.id,
@@ -27,11 +27,11 @@ class UserModel {
   factory UserModel.fromJson(Map<String, dynamic> json) {
     return UserModel(
       id: json['id'],
-      name: json['name'],
-      email: json['email'],
-      password: json['password'],
-      role: json['role'],
-      token: json['token'], // only in login
+      name: json['name'] ?? '',
+      email: json['email'] ?? '', // si no viene, '' por defecto
+      password: json['password'] ?? '', // si no viene, '' por defecto
+      role: json['role'] ?? '',
+      token: json['token'],
       emailVerifiedAt: json['email_verified_at'],
       actived: json['actived'],
       deleted: json['deleted'],
@@ -41,11 +41,6 @@ class UserModel {
 
   //Json to create in Register form
   Map<String, dynamic> toJson() {
-    return {
-      'name': name, 
-      'email': email,
-      'password': password, 
-      'role': role,
-    };
+    return {'name': name, 'email': email, 'password': password, 'role': role};
   }
 }

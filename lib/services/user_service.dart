@@ -9,7 +9,8 @@ class UserService {
   final logger = Logger();
   static const baseURL = 'https://eventify.iaknowhow.es/public/api/';
 
-  // TODO: Service Admin
+  // Service Admin
+  
   Future<List<UserModel>> getUsers() async {
     final token = await TokenService.getToken();
 

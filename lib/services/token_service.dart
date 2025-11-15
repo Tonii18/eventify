@@ -5,7 +5,8 @@ class TokenService {
 
   static const _userIdKey = 'user_id';
 
-  // TODO : Methods to play Token
+  // Methods to play Token
+
   static Future<void> saveToken(String token) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString(_tokenKey, token);
@@ -26,7 +27,8 @@ class TokenService {
     return prefs.containsKey(_tokenKey);
   }
 
-  // TODO : Methods to play UserID
+  // Methods to play UserID
+  
   static Future<void> saveUserId(String id) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString(_userIdKey, id);

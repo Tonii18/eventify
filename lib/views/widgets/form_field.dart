@@ -44,6 +44,7 @@ class _CustomeFormField extends State<CustomeFormField>{
             borderRadius: BorderRadius.circular(widget.borderRadius)
           )
         ),
+        controller: widget.textController,
       ),
     );
   }

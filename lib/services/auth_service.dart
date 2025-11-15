@@ -8,7 +8,8 @@ class AuthService {
   final logger = Logger();
   static const String baseURL = 'https://eventify.iaknowhow.es/public/api/';
 
-  // TODO : Service Register
+  // Service Register
+
   Future<UserModel?> registerUser(UserModel userModel) async {
     final response = await http.post(
       Uri.parse('${baseURL}register'),
@@ -31,13 +32,21 @@ class AuthService {
     }
   }
 
-  // TODO : Service Login
+  // Service Login
+
   Future<UserModel?> loginUser(String email, String password) async {
     try {
+      // Limpia espacios por si acaso
+      email = email.trim();
+      password = password.trim();
+
       final response = await http.post(
         Uri.parse('${baseURL}login'),
-        headers: {'Accept': 'application/json'},
-        body: {'email': email, 'password': password},
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: jsonEncode({'email': email, 'password': password}),
       );
 
       final jsonResponse = jsonDecode(response.body);
@@ -51,7 +60,7 @@ class AuthService {
 
         return UserModel.fromJson(data);
       } else {
-        logger.e('Login failed: ${jsonResponse['data']['error']}');
+        logger.e('Login failed: ${jsonResponse['message']}');
         return null;
       }
     } catch (e) {
@@ -60,7 +69,8 @@ class AuthService {
     }
   }
 
-  // TODO : Service Logout
+  // Service Logout
+  
   Future<void> logout() async {
     await TokenService.deleteToken();
     logger.i('Token eliminado. Sesión cerrada.');
