@@ -6,12 +6,10 @@ class UserProvider extends ChangeNotifier {
   final UserService _userService = UserService();
   bool _isLoading = false;
   String? _errorMessage;
-  UserModel? _currentUser;
   List<UserModel> _users = [];
 
   bool get isLoading => _isLoading;
   String? get errorMessage => _errorMessage;
-  UserModel? get currentUser => _currentUser;
   List<UserModel> get users => _users;
 
   // TODO : Admin Provider
@@ -136,4 +134,8 @@ class UserProvider extends ChangeNotifier {
     notifyListeners();
     return result;
   }
+
+  // TODO : User Provider
+
+  // TODO : Organizer Provider
 }
