@@ -22,11 +22,12 @@ class UserService {
     if (response.statusCode == 200 && jsonResponse['success'] == true) {
       final users = (jsonResponse['data'] as List)
           .map((user) => UserModel.fromJson(user))
+          .where((user) => user.deleted == 0)
+          .where((user) => user.role != 'a')
           .toList();
       return users;
     } else {
-      logger.e('Error obteniendo los usuarios: ${jsonResponse['message']}');
-      return [];
+      throw Exception('Error obteniendo los usuarios: ${jsonResponse['message']}');
     }
   }
 
@@ -101,6 +102,9 @@ class UserService {
       return true;
     }
   }
+
   // TODO: Service User
+  
+
   // TODO: Service Organizer
 }

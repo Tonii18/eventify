@@ -1,14 +1,14 @@
 class UserModel {
-  final int? id;
-  final String name;
-  final String email;
-  final String password;
-  final String role;
-  final String? token;
-  final String? emailVerifiedAt;
-  final int? actived;
-  final int? deleted;
-  final String? code;
+   int? id;
+   String name;
+   String email;
+   String password;
+   String role;
+   String? token;
+   String? emailVerifiedAt;
+   int? actived;
+   int? deleted;
+   String? code;
 
   UserModel({
     this.id,

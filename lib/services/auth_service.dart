@@ -6,7 +6,6 @@ import 'package:logger/logger.dart';
 
 class AuthService {
   final logger = Logger();
-
   static const String baseURL = 'https://eventify.iaknowhow.es/public/api/';
 
   // TODO : Service Register
@@ -48,6 +47,7 @@ class AuthService {
         final token = data['token'];
 
         await TokenService.saveToken(token);
+        await TokenService.saveUserId(data['id'].toString());
 
         return UserModel.fromJson(data);
       } else {
