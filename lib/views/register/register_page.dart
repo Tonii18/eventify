@@ -14,7 +14,8 @@ class RegisterPage extends StatefulWidget {
 
 class _RegisterPageState extends State<RegisterPage> {
   String? _defaultValue;
-  final List<String> list = ['Administrador', 'Usuario', 'Organizador'];
+  //Eliminate the admin rol, don't have select in registration page.
+  final List<String> list = ['Usuario', 'Organizador'];
 
   final TextEditingController nameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
