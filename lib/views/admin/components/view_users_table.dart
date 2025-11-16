@@ -1,4 +1,5 @@
 import 'package:eventify/providers/user_provider.dart';
+import 'package:eventify/views/admin/admin_edit_user.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:provider/provider.dart';
@@ -23,6 +24,9 @@ class _ViewUsersTable extends State<ViewUsersTable> {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+    final scale = size.width / 400;
+
     return ChangeNotifierProvider<UserProvider>.value(
       value: userProvider,
       child: Consumer<UserProvider>(
@@ -49,14 +53,14 @@ class _ViewUsersTable extends State<ViewUsersTable> {
                     SlidableAction(
                       onPressed: (_) async =>
                           await userProvider.activateUser(user.id!),
-                      backgroundColor: Colors.green,
+                      backgroundColor: Colors.greenAccent,
                       icon: Icons.check,
                       label: 'Activar',
                     ),
                     SlidableAction(
                       onPressed: (_) async =>
                           await userProvider.deactivateUser(user.id!),
-                      backgroundColor: Colors.orange,
+                      backgroundColor: Colors.orangeAccent,
                       icon: Icons.block,
                       label: 'Desactivar',
                     ),
@@ -78,13 +82,13 @@ class _ViewUsersTable extends State<ViewUsersTable> {
                                 onPressed: () => Navigator.pop(context, true),
                                 child: const Text(
                                   'Eliminar',
-                                  style: TextStyle(color: Colors.red),
+                                  style: TextStyle(color: Colors.redAccent),
                                 ),
                               ),
                             ],
                           ),
                         );
-                        if (confirm == true){
+                        if (confirm == true) {
                           await userProvider.deleteUser(user.id!);
                         }
                       },
@@ -92,13 +96,60 @@ class _ViewUsersTable extends State<ViewUsersTable> {
                       icon: Icons.delete,
                       label: 'Eliminar',
                     ),
-                    // TODO : The edit slider is missing. SlidableAction(),
                   ],
                 ),
-                child: ListTile(
-                  title: Text(user.name),
-                  subtitle: Text(user.email),
-                  trailing: Text(user.actived == 1 ? 'Activo' : 'Inactivo'),
+                child: Container(
+                  width: size.width * 0.90,
+                  margin: EdgeInsets.symmetric(
+                    horizontal: size.width * 0.05,
+                    vertical: 5,
+                  ),
+
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+
+                  child: ListTile(
+                    leading: Icon(Icons.account_circle_rounded),
+
+                    iconColor: Color.fromRGBO(97, 92, 233, 1.0),
+
+                    title: Text(
+                      user.name,
+                      style: TextStyle(fontWeight: FontWeight.w900),
+                    ),
+
+                    subtitle: Text(user.email),
+
+                    trailing: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(
+                          user.actived == 1 ? Icons.check_circle : Icons.cancel,
+                          color: user.actived == 1
+                              ? Colors.greenAccent
+                              : Colors.redAccent,
+                        ),
+
+                        IconButton(
+                          onPressed: () {
+                            setState(() {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => AdminEditUser(),
+                                ),
+                              );
+                            });
+                          },
+                          icon: Icon(Icons.edit_note_sharp),
+                          color: Color.fromRGBO(63, 61, 86, 1.0),
+                          iconSize: 35 * scale,
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
               );
             },

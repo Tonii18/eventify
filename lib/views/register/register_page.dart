@@ -1,6 +1,7 @@
 import 'package:eventify/providers/auth_provider.dart';
 import 'package:eventify/views/register/components/register_header.dart';
 import 'package:eventify/views/verification/verification_page.dart';
+import 'package:eventify/views/widgets/back_header.dart';
 import 'package:eventify/views/widgets/elevated_button.dart';
 import 'package:eventify/views/widgets/form_field.dart';
 import 'package:flutter/material.dart';
@@ -14,7 +15,7 @@ class RegisterPage extends StatefulWidget {
 
 class _RegisterPageState extends State<RegisterPage> {
   String? _defaultValue;
-  //Eliminate the admin rol, don't have select in registration page.
+  
   final List<String> list = ['Usuario', 'Organizador'];
 
   final TextEditingController nameController = TextEditingController();
@@ -40,7 +41,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
             // This CHILDREN ARRAY contains every components
             children: [
-              RegisterHeader(scale: scale),
+              BackHeader(scale: scale, title: 'Crea tu cuenta', color: Color.fromRGBO(97, 92, 233, 1.0),),
 
               SizedBox(height: 16 * scale),
 

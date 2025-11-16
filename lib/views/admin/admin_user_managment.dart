@@ -28,8 +28,10 @@ class _AdminUserManagment extends State<AdminUserManagment> {
               scale: scale
             ),
 
-            ViewUsersTable(
-              scale: scale, 
+            Flexible(
+              child: ViewUsersTable(
+                scale: scale, 
+              ),
             ),
 
           ],

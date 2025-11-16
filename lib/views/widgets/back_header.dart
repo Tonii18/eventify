@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 
-class RegisterHeader extends StatefulWidget{
+class BackHeader extends StatefulWidget{
   final double scale;
   final String title;
   final Color color;
 
-  const RegisterHeader({super.key, required this.scale, required this.title, required this.color});
+  const BackHeader({super.key, required this.scale, required this.title, required this.color});
   
   @override
-  State<StatefulWidget> createState() => _RegisterHeader();
+  State<StatefulWidget> createState() => _BackHeader();
 }
 
-class _RegisterHeader extends State<RegisterHeader> {
+class _BackHeader extends State<BackHeader> {
   @override
   Widget build(BuildContext context) {
     return Padding(
