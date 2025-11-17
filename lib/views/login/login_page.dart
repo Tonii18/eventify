@@ -114,6 +114,10 @@ class _LoginPageState extends State<LoginPage> {
     if(await authProvider.login(email, password)){
       if(authProvider.user?.role == 'a'){
         Navigator.push(context,MaterialPageRoute(builder: (context) => AdminMenu()));
+      }else if(authProvider.user?.role == 'u'){
+        if(authProvider.user?.emailVerifiedAt != null && authProvider.user?.actived == 1){
+          // Redirect to user home
+        }
       }
     }
   }

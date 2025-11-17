@@ -14,6 +14,7 @@ class ViewUsersTable extends StatefulWidget {
 
 class _ViewUsersTable extends State<ViewUsersTable> {
   late final UserProvider userProvider;
+  final TextEditingController nameController = TextEditingController();
 
   @override
   void initState() {
@@ -134,14 +135,7 @@ class _ViewUsersTable extends State<ViewUsersTable> {
 
                         IconButton(
                           onPressed: () {
-                            setState(() {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => AdminEditUser(),
-                                ),
-                              );
-                            });
+                            _editUserName(context, userProvider, user);
                           },
                           icon: Icon(Icons.edit_note_sharp),
                           color: Color.fromRGBO(63, 61, 86, 1.0),
@@ -157,5 +151,41 @@ class _ViewUsersTable extends State<ViewUsersTable> {
         },
       ),
     );
+  }
+
+  Future<void> _editUserName(BuildContext context, userProvider, user) async {
+    final newName = await showDialog<String>(
+      context: context,
+      builder: (context) {
+        final nameController = TextEditingController(text: user.name);
+
+        return AlertDialog(
+          title: Text('Editar nombre'),
+          content: TextField(
+            controller: nameController,
+            decoration: InputDecoration(labelText: 'Nombre de usuario'),
+          ),
+
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: Text('Cancelar'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context, nameController.text);
+              },
+              child: Text('Guardar'),
+            ),
+          ],
+        );
+      },
+    );
+
+    if (newName != null && newName.isNotEmpty) {
+      await userProvider.updateUser(user.id!, newName);
+    }
   }
 }
