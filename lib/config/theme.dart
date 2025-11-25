@@ -17,4 +17,5 @@ class AppColors {
   static const orangeAccent = Colors.orangeAccent;
   static const secondaryPurple = Color.fromRGBO(55, 52, 131, 1.0);
   static const lightGrey = Color.fromRGBO(180, 180, 180, 1.0);
+  
 }
