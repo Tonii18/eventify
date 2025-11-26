@@ -17,7 +17,13 @@ class EventProvider extends ChangeNotifier {
     notifyListeners();
 
     try {
-      _events = await _eventService.getEvents();
+      final List<EventModel> allEvents = await _eventService.getEvents();
+      final now = DateTime.now();
+
+      _events = allEvents.where((event) {
+        final eventDate = DateTime.parse(event.startTime);
+        return eventDate.isAfter(now);
+      }).toList();
       _errorMessage = null;
     } catch (e) {
       _events = [];
@@ -29,5 +35,4 @@ class EventProvider extends ChangeNotifier {
 
     return _events.isNotEmpty;
   }
-  
 }
