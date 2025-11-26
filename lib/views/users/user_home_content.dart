@@ -2,7 +2,6 @@ import 'package:eventify/config/measures.dart';
 import 'package:eventify/config/theme.dart';
 import 'package:eventify/views/users/components/home_header.dart';
 import 'package:eventify/views/widgets/base_page.dart';
-import 'package:eventify/views/widgets/bottom_navigation_bar.dart';
 import 'package:flutter/material.dart';
 
 class UserHomeContent extends StatelessWidget {

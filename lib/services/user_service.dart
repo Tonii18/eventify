@@ -7,7 +7,7 @@ import 'package:http/http.dart' as http;
 
 class UserService {
   final logger = Logger();
-  static const baseURL = 'https://eventify.iaknowhow.es/public/api/';
+  static const String baseURL = 'https://eventify.iaknowhow.es/public/api/';
 
   // Service Admin
   

@@ -1,5 +1,4 @@
 import 'package:eventify/config/theme.dart';
-import 'package:eventify/providers/auth_provider.dart';
 import 'package:eventify/services/auth_service.dart';
 import 'package:eventify/views/login/login_page.dart';
 import 'package:flutter/material.dart';

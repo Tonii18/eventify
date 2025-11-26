@@ -9,7 +9,6 @@ class AuthService {
   static const String baseURL = 'https://eventify.iaknowhow.es/public/api/';
 
   // Service Register
-
   Future<UserModel?> registerUser(UserModel userModel) async {
     final response = await http.post(
       Uri.parse('${baseURL}register'),
@@ -33,7 +32,6 @@ class AuthService {
   }
 
   // Service Login
-
   Future<UserModel?> loginUser(String email, String password) async {
     try {
       email = email.trim();
@@ -70,7 +68,6 @@ class AuthService {
   }
 
   // Service Logout
-
   Future<void> logout() async {
     await TokenService.deleteToken();
     logger.i('Token eliminado. Sesión cerrada.');
