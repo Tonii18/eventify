@@ -10,7 +10,7 @@ class EventService {
   static const String baseUrl = 'https://eventify.iaknowhow.es/public/api/';
 
   Future<List<EventModel>> getEvents() async {
-    final token = TokenService.getToken();
+    final token = await TokenService.getToken();
 
     final response = await http.get(
       Uri.parse('${baseUrl}events'),
@@ -19,7 +19,7 @@ class EventService {
 
     final jsonResponse =  jsonDecode(response.body);
     if(response.statusCode == 200 && jsonResponse['success'] == true){
-      final events = (jsonResponse['body'] as List)
+      final events = (jsonResponse['data'] as List)
         .map((event) => EventModel.fromJson(event))
         .toList();
       return events;

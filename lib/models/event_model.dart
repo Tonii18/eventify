@@ -6,8 +6,8 @@ class EventModel {
   String imageUrl;
   String category;
   String? location;
-  String? latitude;
-  String? longitude;
+  double? latitude;
+  double? longitude;
 
   EventModel({
     this.id,
