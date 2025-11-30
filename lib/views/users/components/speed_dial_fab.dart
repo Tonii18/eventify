@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 
 class SpeedDialFab extends StatefulWidget {
-  const SpeedDialFab({super.key});
+  final Function(String?) onFilterSelected;
+
+  const SpeedDialFab({super.key, required this.onFilterSelected,});
 
   @override
   State<SpeedDialFab> createState() => _SpeedDialFabState();
@@ -27,19 +29,19 @@ class _SpeedDialFabState extends State<SpeedDialFab> {
         SpeedDialChild(
           child: Icon(Icons.music_note, color: AppColors.darkBlue),
           backgroundColor: AppColors.white,
-          onTap: (){},
+          onTap: () => widget.onFilterSelected('music'),
           shape: CircleBorder()
         ),
         SpeedDialChild(
           child: Icon(Icons.sports_gymnastics_rounded, color: AppColors.darkBlue),
           backgroundColor: AppColors.white,
-          onTap: () {},
+          onTap: () => widget.onFilterSelected('sport'),
           shape: CircleBorder()
         ),
         SpeedDialChild(
           child: Icon(Icons.cell_tower, color: AppColors.darkBlue),
           backgroundColor: AppColors.white,
-          onTap: () {},
+          onTap: () => widget.onFilterSelected('technology'),
           shape: CircleBorder()
         ),
       ],

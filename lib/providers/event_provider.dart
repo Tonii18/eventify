@@ -7,10 +7,12 @@ class EventProvider extends ChangeNotifier {
   bool _isLoading = false;
   String? _errorMessage;
   List<EventModel> _events = [];
+  List<EventModel> _eventsFilter = [];
 
   bool get isLoading => _isLoading;
   String? get errorMessage => _errorMessage;
   List<EventModel> get events => _events;
+  List<EventModel> get eventsFilter => _eventsFilter;
 
   Future<bool> loadEventsAfterDayTimeNow() async {
     _isLoading = true;
@@ -36,5 +38,27 @@ class EventProvider extends ChangeNotifier {
     return _events.isNotEmpty;
   }
 
-  
+  Future<bool> loadEventsAfterDayTimeNowByCategory(categoryFilter) async {
+    _isLoading = true;
+    notifyListeners();
+
+    try {
+      final List<EventModel> allEvents = await _eventService.getEventsByCategory(categoryFilter);
+      final now = DateTime.now();
+
+      _eventsFilter = allEvents.where((event) {
+        final eventDate = DateTime.parse(event.startTime);
+        return eventDate.isAfter(now);
+      }).toList();
+      _errorMessage = null;
+    } catch (e) {
+      _eventsFilter = [];
+      _errorMessage = e.toString();
+    }
+
+    _isLoading = false;
+    notifyListeners();
+
+    return _eventsFilter.isNotEmpty;
+  }
 }

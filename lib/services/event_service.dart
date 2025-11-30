@@ -17,14 +17,38 @@ class EventService {
       headers: {'Accept': 'application/json', 'Authorization': 'Bearer $token'},
     );
 
-    final jsonResponse =  jsonDecode(response.body);
-    if(response.statusCode == 200 && jsonResponse['success'] == true){
+    final jsonResponse = jsonDecode(response.body);
+    if (response.statusCode == 200 && jsonResponse['success'] == true) {
       final events = (jsonResponse['data'] as List)
-        .map((event) => EventModel.fromJson(event))
-        .toList();
+          .map((event) => EventModel.fromJson(event))
+          .toList();
       return events;
-    }else{
-      throw Exception('Error obteniendo los eventos: ${jsonResponse['message']}');
+    } else {
+      throw Exception(
+        'Error obteniendo los eventos: ${jsonResponse['message']}',
+      );
+    }
+  }
+
+  Future<List<EventModel>> getEventsByCategory(String categoryFilter) async {
+    final token = await TokenService.getToken();
+
+    final response = await http.get(
+      Uri.parse('${baseUrl}events'),
+      headers: {'Accept': 'application/json', 'Authorization': 'Bearer $token'},
+    );
+
+    final jsonResponse = jsonDecode(response.body);
+    if (response.statusCode == 200 && jsonResponse['success'] == true) {
+      final eventsByCategory = (jsonResponse['data'] as List)
+          .map((event) => EventModel.fromJson(event))
+          .where((event) => event.category.toLowerCase() == categoryFilter.toLowerCase())
+          .toList();
+      return eventsByCategory;
+    } else {
+      throw Exception(
+        'Error obteniendo los eventos por categorias: ${jsonResponse['message']}',
+      );
     }
   }
 }

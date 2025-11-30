@@ -26,11 +26,6 @@ class EventCard extends StatelessWidget {
       'Cultural': '3F81EA',
     };
 
-    final dateAll = event.startTime;
-    final splitter = dateAll.split(' ');
-    final day = splitter[0];
-    final hour = splitter[1];
-
     return Container(
       width: width * 0.6,
       height: height * 0.5,
