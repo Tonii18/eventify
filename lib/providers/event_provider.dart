@@ -26,6 +26,7 @@ class EventProvider extends ChangeNotifier {
         final eventDate = DateTime.parse(event.startTime);
         return eventDate.isAfter(now);
       }).toList();
+      _events.sort((a, b) => b.startTime.compareTo(a.startTime));
       _errorMessage = null;
     } catch (e) {
       _events = [];
@@ -43,13 +44,15 @@ class EventProvider extends ChangeNotifier {
     notifyListeners();
 
     try {
-      final List<EventModel> allEvents = await _eventService.getEventsByCategory(categoryFilter);
+      final List<EventModel> allEvents = await _eventService
+          .getEventsByCategory(categoryFilter);
       final now = DateTime.now();
 
       _eventsFilter = allEvents.where((event) {
         final eventDate = DateTime.parse(event.startTime);
         return eventDate.isAfter(now);
       }).toList();
+      _eventsFilter.sort((a, b) => b.startTime.compareTo(a.startTime));
       _errorMessage = null;
     } catch (e) {
       _eventsFilter = [];
