@@ -10,10 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class UserEvents extends StatefulWidget {
-  
-  const UserEvents({
-    super.key,
-  });
+  const UserEvents({super.key});
 
   @override
   State<StatefulWidget> createState() => _UserEvents();
@@ -52,6 +49,7 @@ class _UserEvents extends State<UserEvents> {
 
     final size = MediaQuery.of(context).size;
     final scale = size.width / 400;
+    final TextEditingController textEditingController = TextEditingController();
 
     // Provide EventProvider
 
@@ -65,7 +63,6 @@ class _UserEvents extends State<UserEvents> {
           topMargin: Measures.marginTop,
           child: Consumer<EventProvider>(
             builder: (context, provider, child) {
-              
               if (provider.isLoading) {
                 return Center(child: CircularProgressIndicator());
               }
@@ -74,7 +71,9 @@ class _UserEvents extends State<UserEvents> {
                 return Center(child: Text('Error: ${provider.errorMessage}'));
               }
 
-              List<EventModel> events = currentFilter != null ? provider.eventsFilter : provider.events;
+              List<EventModel> events = currentFilter != null
+                  ? provider.eventsFilter
+                  : provider.events;
 
               if (events.isEmpty) {
                 return Center(child: Text('No hay eventos disponibles'));
@@ -88,7 +87,7 @@ class _UserEvents extends State<UserEvents> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        currentFilter != null ? 'Filtrado: $currentFilter' : 'Explorar',
+                        currentFilter != null ? 'Resultados para:  ': 'Explorar',
                         style: TextStyle(
                           fontSize: 20 * scale,
                           fontWeight: FontWeight.w900,
@@ -96,12 +95,22 @@ class _UserEvents extends State<UserEvents> {
                         ),
                       ),
 
-                      if(currentFilter != null)
+                      if (currentFilter != null)
+                        Text(
+                          currentFilter!.toUpperCase(),
+                          style: TextStyle(
+                            fontSize: 20 * scale,
+                            fontWeight: FontWeight.w100,
+                            color: AppColors.darkBlue,
+                          ),
+                        ),
+
+                      if (currentFilter != null)
                         IconButton(
                           onPressed: () => _updateFilter(null),
                           icon: Icon(Icons.filter_alt_off),
                           color: AppColors.darkBlue,
-                          iconSize: scale * 40,
+                          iconSize: scale * 30,
                         ),
                     ],
                   ),
@@ -132,9 +141,7 @@ class _UserEvents extends State<UserEvents> {
           ),
         ),
 
-        floatingActionButton: SpeedDialFab(
-          onFilterSelected: _updateFilter,
-        ),
+        floatingActionButton: SpeedDialFab(onFilterSelected: _updateFilter),
       ),
     );
   }
