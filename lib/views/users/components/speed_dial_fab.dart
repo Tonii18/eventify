@@ -44,6 +44,12 @@ class _SpeedDialFabState extends State<SpeedDialFab> {
           onTap: () => widget.onFilterSelected('technology'),
           shape: CircleBorder()
         ),
+        SpeedDialChild(
+          child: Icon(Icons.temple_buddhist, color: AppColors.darkBlue),
+          backgroundColor: AppColors.white,
+          onTap: () => widget.onFilterSelected('cultural'),
+          shape: CircleBorder()
+        ),
       ],
     );
   }
