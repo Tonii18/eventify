@@ -18,11 +18,15 @@ class CustomeBottomNavigationBar extends StatelessWidget {
       items: [
         BottomNavigationBarItem(
           icon: Icon(Icons.home_filled),
-          label: 'Inicio'
+          label: 'Mis eventos'
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.calendar_month_outlined),
           label: 'Eventos',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.insert_chart_rounded),
+          label: 'Informes',
         ),
       ],
       currentIndex: currentIndex,
