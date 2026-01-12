@@ -129,7 +129,7 @@ class _UserEvents extends State<UserEvents> {
                       );
                     },
                     options: CarouselOptions(
-                      height: MediaQuery.of(context).size.height * 0.55,
+                      height: MediaQuery.of(context).size.height * 0.75,
                       enlargeCenterPage: true,
                       enableInfiniteScroll: false,
                       viewportFraction: 0.7,
