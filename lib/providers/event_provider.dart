@@ -78,9 +78,10 @@ class EventProvider extends ChangeNotifier {
     notifyListeners();
 
     try {
-      final userId = await TokenService.getUserId();
+      final userIdString = await TokenService.getUserId();
+      final userId = int.parse(userIdString!);
 
-      //await _eventService.registerEvent(userId: userId, eventId: eventId);
+      await _eventService.registerEvent(userId: userId, eventId: eventId);
 
       _isRegistering = false;
       notifyListeners();

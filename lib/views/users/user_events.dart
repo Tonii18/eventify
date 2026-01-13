@@ -62,6 +62,8 @@ class _UserEvents extends State<UserEvents> {
           topMargin: Measures.marginTop,
           child: Consumer<EventProvider>(
             builder: (context, provider, child) {
+              final isRegistering = provider.isRegistering;
+
               if (provider.isLoading) {
                 return Center(child: CircularProgressIndicator());
               }
@@ -86,7 +88,9 @@ class _UserEvents extends State<UserEvents> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        currentFilter != null ? 'Resultados para:  ': 'Explorar',
+                        currentFilter != null
+                            ? 'Resultados para:  '
+                            : 'Explorar',
                         style: TextStyle(
                           fontSize: 20 * scale,
                           fontWeight: FontWeight.w900,
@@ -125,6 +129,29 @@ class _UserEvents extends State<UserEvents> {
                         width: size.width,
                         height: size.height,
                         scale: scale,
+                        onRegister: () async {
+                          debugPrint('ON REGISTER EN UserEvents');
+
+                          final success = await provider.registerUserToEvent(
+                            ev.id!,
+                          );
+
+                          debugPrint('RESULTADO REGISTRO: $success');
+
+                          if (!context.mounted) return;
+
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(
+                                success
+                                    ? 'Evento registrado correctamente'
+                                    : provider.registerError ??
+                                          'Error al registrarse',
+                              ),
+                            ),
+                          );
+                        },
+                        isRegistering: isRegistering,
                       );
                     },
                     options: CarouselOptions(

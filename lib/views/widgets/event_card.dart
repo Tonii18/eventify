@@ -9,13 +9,17 @@ class EventCard extends StatelessWidget {
   final double width;
   final double height;
   final double scale;
+  final VoidCallback onRegister;
+  final bool isRegistering;
 
   const EventCard({
     super.key,
     required this.event,
     required this.width,
     required this.height,
-    required this.scale,
+    required this.scale, 
+    required this.onRegister, 
+    required this.isRegistering,
   });
 
   @override
@@ -153,11 +157,13 @@ class EventCard extends StatelessWidget {
                     height: height * 0.05,
                     scale: scale,
                     borderRadius: 5,
-                    text: 'Registrarme',
+                    text: isRegistering ? 'Registrandome...' : 'Registrarme',
                     textColor: AppColors.white,
                     fontSize: 15 * scale,
                     fontWeight: FontWeight.w900,
                     onPressed: (){
+                      print('Has pulsado el boton');
+                      isRegistering ? null : onRegister();
                       
                     },
                   ),
