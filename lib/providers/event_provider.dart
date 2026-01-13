@@ -1,5 +1,6 @@
 import 'package:eventify/models/event_model.dart';
 import 'package:eventify/services/event_service.dart';
+import 'package:eventify/services/token_service.dart';
 import 'package:flutter/material.dart';
 
 class EventProvider extends ChangeNotifier {
@@ -13,6 +14,12 @@ class EventProvider extends ChangeNotifier {
   String? get errorMessage => _errorMessage;
   List<EventModel> get events => _events;
   List<EventModel> get eventsFilter => _eventsFilter;
+
+  bool _isRegistering = false;
+  String? _registerError;
+
+  bool get isRegistering => _isRegistering;
+  String? get registerError => _registerError;
 
   Future<bool> loadEventsAfterDayTimeNow() async {
     _isLoading = true;
@@ -63,5 +70,26 @@ class EventProvider extends ChangeNotifier {
     notifyListeners();
 
     return _eventsFilter.isNotEmpty;
+  }
+
+  Future<bool> registerUserToEvent(int eventId) async {
+    _isRegistering = true;
+    _registerError = null;
+    notifyListeners();
+
+    try {
+      final userId = await TokenService.getUserId();
+
+      //await _eventService.registerEvent(userId: userId, eventId: eventId);
+
+      _isRegistering = false;
+      notifyListeners();
+      return true;
+    } catch (e) {
+      _isRegistering = false;
+      _registerError = e.toString();
+      notifyListeners();
+      return false;
+    }
   }
 }

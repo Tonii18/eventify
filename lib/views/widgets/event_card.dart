@@ -149,7 +149,7 @@ class EventCard extends StatelessWidget {
                 children: [
                   IconButton(onPressed: () {}, icon: Icon(Icons.info_sharp)),
                   CustomeElevatedButton(
-                    width: width * 0.3,
+                    width: width * 0.25,
                     height: height * 0.05,
                     scale: scale,
                     borderRadius: 5,
@@ -157,6 +157,9 @@ class EventCard extends StatelessWidget {
                     textColor: AppColors.white,
                     fontSize: 15 * scale,
                     fontWeight: FontWeight.w900,
+                    onPressed: (){
+                      
+                    },
                   ),
                   IconButton(onPressed: () {}, icon: Icon(Icons.cancel)),
                 ],

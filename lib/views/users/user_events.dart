@@ -49,7 +49,6 @@ class _UserEvents extends State<UserEvents> {
 
     final size = MediaQuery.of(context).size;
     final scale = size.width / 400;
-    final TextEditingController textEditingController = TextEditingController();
 
     // Provide EventProvider
 
