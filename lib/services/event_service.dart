@@ -86,9 +86,7 @@ class EventService {
     final response = await http.post(
       Uri.parse('${baseUrl}eventsByUser'),
       headers: {'Accept': 'application/json', 'Authorization': 'Bearer $token'},
-      body : {
-        'id': userId.toString(),
-      },
+      body: {'id': userId.toString()},
     );
 
     final jsonResponse = jsonDecode(response.body);
@@ -100,6 +98,28 @@ class EventService {
     } else {
       throw Exception(
         jsonResponse['message'] ?? 'Error obteniendo eventos del usuario',
+      );
+    }
+  }
+
+  Future<List<EventModel>> getMyEvents(int userId) async {
+    final token = await TokenService.getToken();
+
+    final response = await http.post(
+      Uri.parse('${baseUrl}eventsByUser'),
+      headers: {'Accept': 'application/json', 'Authorization': 'Bearer $token'},
+      body: {'id': userId.toString()},
+    );
+
+    final jsonResponse = jsonDecode(response.body);
+
+    if (response.statusCode == 200 && jsonResponse['success'] == true) {
+      return (jsonResponse['data'] as List)
+          .map((event) => EventModel.fromJson(event))
+          .toList();
+    } else {
+      throw Exception(
+        jsonResponse['message'] ?? 'Error obteniendo mis eventos',
       );
     }
   }

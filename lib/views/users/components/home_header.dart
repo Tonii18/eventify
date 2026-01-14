@@ -52,7 +52,7 @@ class _HomeHeader extends State<HomeHeader> {
                 ),
 
                 Text(
-                  '¿Qué toca esta semana?\nNo te pierdas nada',
+                  '¿Qué toca esta semana?',
                   style: TextStyle(
                     fontSize: 15 * widget.scale,
                     fontWeight: FontWeight.w100,

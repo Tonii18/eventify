@@ -34,7 +34,7 @@ class EventCard extends StatelessWidget {
     };
 
     final Color registerBackgroundColor = isRegistered
-        ? Colors.grey
+        ? const Color.fromARGB(255, 212, 212, 212)
         : Color(
             int.parse(
               'FF${mapCategoryColor[event.category] ?? '000000'}',

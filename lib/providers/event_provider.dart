@@ -21,6 +21,9 @@ class EventProvider extends ChangeNotifier {
   bool get isRegistering => _isRegistering;
   String? get registerError => _registerError;
 
+  List<EventModel> _myEvents = [];
+  List<EventModel> get myEvents => _myEvents;
+
   // Set with reigstered events IDs
 
   final Set<int> _registeredEvents = {};
@@ -108,7 +111,7 @@ class EventProvider extends ChangeNotifier {
 
       await _eventService.registerEvent(userId: userId, eventId: eventId);
 
-      await loadEventsAfterDayTimeNow(); // 🔥 vuelve a cruzar datos
+      await loadEventsAfterDayTimeNow();
       return true;
     } catch (e) {
       _registerError = e.toString();
@@ -117,5 +120,40 @@ class EventProvider extends ChangeNotifier {
       _isRegistering = false;
       notifyListeners();
     }
+  }
+
+  Future<bool> loadMyEvents() async {
+    _isLoading = true;
+    notifyListeners();
+
+    try {
+      final userIdString = await TokenService.getUserId();
+      if (userIdString == null) {
+        throw Exception('Usuario no autenticado');
+      }
+
+      final userId = int.parse(userIdString);
+
+      final allEvents = await _eventService.getEvents();
+
+      final registeredIds = await _eventService.getRegisteredEventIdsByUser(userId);
+
+      _registeredEventIds = registeredIds.toSet();
+
+      _myEvents = allEvents
+        .where((event) => _registeredEventIds.contains(event.id))
+        .toList();
+
+      _myEvents.sort((b, a) => b.startTime.compareTo(a.startTime));
+      _errorMessage = null;
+
+    } catch (e) {
+      _myEvents = [];
+      _errorMessage = e.toString();
+    }
+
+    _isLoading = false;
+    notifyListeners();
+    return _myEvents.isNotEmpty;
   }
 }
