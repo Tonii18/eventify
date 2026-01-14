@@ -79,4 +79,28 @@ class EventService {
       throw Exception(jsonResponse['message'] ?? 'Error registrando el evento');
     }
   }
+
+  Future<List<int>> getRegisteredEventIdsByUser(int userId) async {
+    final token = await TokenService.getToken();
+
+    final response = await http.post(
+      Uri.parse('${baseUrl}eventsByUser'),
+      headers: {'Accept': 'application/json', 'Authorization': 'Bearer $token'},
+      body : {
+        'id': userId.toString(),
+      },
+    );
+
+    final jsonResponse = jsonDecode(response.body);
+
+    if (response.statusCode == 200 && jsonResponse['success'] == true) {
+      return (jsonResponse['data'] as List)
+          .map<int>((event) => int.parse(event['id'].toString()))
+          .toList();
+    } else {
+      throw Exception(
+        jsonResponse['message'] ?? 'Error obteniendo eventos del usuario',
+      );
+    }
+  }
 }

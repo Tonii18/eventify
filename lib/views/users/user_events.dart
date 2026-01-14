@@ -23,7 +23,6 @@ class _UserEvents extends State<UserEvents> {
   @override
   void initState() {
     super.initState();
-    // Creamos el provider UNA SOLA VEZ
     eventProvider = EventProvider();
     _loadEvents();
   }
@@ -124,6 +123,12 @@ class _UserEvents extends State<UserEvents> {
                     itemCount: events.length,
                     itemBuilder: (context, index, realIndex) {
                       final ev = events[index];
+
+                      final isRegistered = provider.isEventRegistered(ev.id!);
+                      final registered = provider.registeredEventIds.contains(
+                        ev.id,
+                      );
+
                       return EventCard(
                         event: ev,
                         width: size.width,
@@ -152,6 +157,7 @@ class _UserEvents extends State<UserEvents> {
                           );
                         },
                         isRegistering: isRegistering,
+                        isRegistered: registered,
                       );
                     },
                     options: CarouselOptions(

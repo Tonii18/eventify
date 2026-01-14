@@ -11,15 +11,17 @@ class EventCard extends StatelessWidget {
   final double scale;
   final VoidCallback onRegister;
   final bool isRegistering;
+  final bool isRegistered;
 
   const EventCard({
     super.key,
     required this.event,
     required this.width,
     required this.height,
-    required this.scale, 
-    required this.onRegister, 
+    required this.scale,
+    required this.onRegister,
     required this.isRegistering,
+    required this.isRegistered,
   });
 
   @override
@@ -30,6 +32,15 @@ class EventCard extends StatelessWidget {
       'Technology': '4CAF50',
       'Cultural': '3F81EA',
     };
+
+    final Color registerBackgroundColor = isRegistered
+        ? Colors.grey
+        : Color(
+            int.parse(
+              'FF${mapCategoryColor[event.category] ?? '000000'}',
+              radix: 16,
+            ),
+          );
 
     return SingleChildScrollView(
       child: Column(
@@ -131,14 +142,9 @@ class EventCard extends StatelessWidget {
           SizedBox(
             width: width * 0.6,
             child: TextButton(
-              onPressed: () {},
+              onPressed: isRegistered ? null : () {},
               style: TextButton.styleFrom(
-                backgroundColor: Color(
-                  int.parse(
-                    'FF${mapCategoryColor[event.category] ?? '000000'}',
-                    radix: 16,
-                  ),
-                ),
+                backgroundColor: registerBackgroundColor,
                 foregroundColor: AppColors.white,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20),
@@ -161,10 +167,8 @@ class EventCard extends StatelessWidget {
                     textColor: AppColors.white,
                     fontSize: 15 * scale,
                     fontWeight: FontWeight.w900,
-                    onPressed: (){
-                      print('Has pulsado el boton');
-                      isRegistering ? null : onRegister();
-                      
+                    onPressed: () {
+                      isRegistered || isRegistering ? null : onRegister();
                     },
                   ),
                   IconButton(onPressed: () {}, icon: Icon(Icons.cancel)),
