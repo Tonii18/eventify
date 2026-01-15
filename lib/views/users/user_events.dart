@@ -156,6 +156,29 @@ class _UserEvents extends State<UserEvents> {
                             ),
                           );
                         },
+
+                        onUnRegister: () async {
+                          debugPrint('ON UNREGISTER EN UserEvents');
+
+                          final success = await provider.unRegisterUserToEvent(
+                            ev.id!,
+                          );
+
+                          debugPrint('RESULTADO REGISTRO: $success');
+
+                          if (!context.mounted) return;
+
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(
+                                success
+                                    ? 'Evento desregistrado correctamente'
+                                    : provider.registerError ??
+                                          'Error al desregistrarse',
+                              ),
+                            ),
+                          );
+                        },
                         isRegistering: isRegistering,
                         isRegistered: registered,
                       );

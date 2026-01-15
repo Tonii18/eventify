@@ -84,6 +84,7 @@ class _UserHomeContentState extends State<UserHomeContent> {
                         isRegistering: false,
                         isRegistered: true,
                         onRegister: () {},
+                        onUnRegister: () {},
                       );
                     },
                     options: CarouselOptions(

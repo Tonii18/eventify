@@ -80,6 +80,28 @@ class EventService {
     }
   }
 
+  Future<void> unRegisterEvent({
+    required int userId,
+    required int eventId,
+  }) async {
+    final token = await TokenService.getToken();
+    final response = await http.post(
+      Uri.parse('${baseUrl}unregisterEvent'),
+      headers: {'Accept': 'application/json', 'Authorization': 'Bearer $token'},
+      body: {'user_id': userId.toString(), 'event_id': eventId.toString()},
+    );
+
+    final jsonResponse = jsonDecode(response.body);
+
+    if (response.statusCode == 200 && jsonResponse['success'] == true) {
+      return;
+    } else {
+      throw Exception(
+        jsonResponse['message'] ?? 'Error desregistrando el evento',
+      );
+    }
+  }
+
   Future<List<int>> getRegisteredEventIdsByUser(int userId) async {
     final token = await TokenService.getToken();
 

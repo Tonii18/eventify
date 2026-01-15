@@ -122,6 +122,30 @@ class EventProvider extends ChangeNotifier {
     }
   }
 
+  Future<bool> unRegisterUserToEvent(int eventId) async {
+    _isRegistering = true;
+    notifyListeners();
+
+    try {
+      final userIdString = await TokenService.getUserId();
+      if (userIdString == null) {
+        throw Exception('Usuario no autenticado');
+      }
+      final userId = int.parse(userIdString);
+
+      await _eventService.unRegisterEvent(userId: userId, eventId: eventId);
+
+      await loadEventsAfterDayTimeNow();
+      return true;
+    } catch (e) {
+      _registerError = e.toString();
+      return false;
+    } finally {
+      _isRegistering = false;
+      notifyListeners();
+    }
+  }
+
   Future<bool> loadMyEvents() async {
     _isLoading = true;
     notifyListeners();
@@ -136,17 +160,18 @@ class EventProvider extends ChangeNotifier {
 
       final allEvents = await _eventService.getEvents();
 
-      final registeredIds = await _eventService.getRegisteredEventIdsByUser(userId);
+      final registeredIds = await _eventService.getRegisteredEventIdsByUser(
+        userId,
+      );
 
       _registeredEventIds = registeredIds.toSet();
 
       _myEvents = allEvents
-        .where((event) => _registeredEventIds.contains(event.id))
-        .toList();
+          .where((event) => _registeredEventIds.contains(event.id))
+          .toList();
 
       _myEvents.sort((b, a) => b.startTime.compareTo(a.startTime));
       _errorMessage = null;
-
     } catch (e) {
       _myEvents = [];
       _errorMessage = e.toString();
