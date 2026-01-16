@@ -1,6 +1,7 @@
 import 'package:eventify/config/theme.dart';
 import 'package:eventify/views/users/user_events.dart';
 import 'package:eventify/views/users/user_home_content.dart';
+import 'package:eventify/views/users/user_information.dart';
 import 'package:eventify/views/widgets/bottom_navigation_bar.dart';
 import 'package:flutter/material.dart';
 
@@ -17,6 +18,7 @@ class _UserHome extends State<UserHome> {
   final List<Widget> widgetsOptions = [
     UserHomeContent(),
     UserEvents(),
+    UserInformation(),
   ];
 
   void onNavTapped(int index) {
