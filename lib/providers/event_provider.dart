@@ -1,9 +1,14 @@
+import 'dart:io';
+
 import 'package:eventify/models/event_model.dart';
 import 'package:eventify/services/event_service.dart';
+import 'package:eventify/services/pdf_service.dart';
 import 'package:eventify/services/token_service.dart';
 import 'package:flutter/material.dart';
 
 class EventProvider extends ChangeNotifier {
+  // States
+
   final EventService _eventService = EventService();
   bool _isLoading = false;
   String? _errorMessage;
@@ -24,12 +29,21 @@ class EventProvider extends ChangeNotifier {
   List<EventModel> _myEvents = [];
   List<EventModel> get myEvents => _myEvents;
 
-  // Set with reigstered events IDs
-
   final Set<int> _registeredEvents = {};
 
   Set<int> _registeredEventIds = {};
   Set<int> get registeredEventIds => _registeredEventIds;
+
+  // States related to PDF generation
+
+  File? _generatedPdf;
+  bool _isGeneratingPdf = false;
+
+  File? get generatedPdf => _generatedPdf;
+  bool get isGeneratingPdf => _isGeneratingPdf;
+  bool get canSendPdf => _generatedPdf != null;
+
+  // Functions
 
   Future<bool> loadEventsAfterDayTimeNow() async {
     _isLoading = true;
@@ -180,5 +194,53 @@ class EventProvider extends ChangeNotifier {
     _isLoading = false;
     notifyListeners();
     return _myEvents.isNotEmpty;
+  }
+
+  List<EventModel> filterEventsForReport({
+    required DateTime startDate,
+    required DateTime endDate,
+    required Map<String, bool> eventTypes,
+  }) {
+    return _myEvents.where((event) {
+      final eventDate = DateTime.parse(event.startTime);
+
+      final inDateRange =
+          eventDate.isAfter(startDate) && eventDate.isBefore(endDate);
+
+      final categoryAllowed = eventTypes[event.category.toLowerCase()] == true;
+
+      return inDateRange && categoryAllowed;
+    }).toList();
+  }
+
+  Future<bool> generatePdfReport({
+    required DateTime startDate,
+    required DateTime endDate,
+    required Map<String, bool> eventTypes,
+  }) async {
+    _isGeneratingPdf = true;
+    notifyListeners();
+
+    try {
+      if (_myEvents.isEmpty) {
+        await loadMyEvents();
+      }
+
+      final filteredEvents = filterEventsForReport(
+        startDate: startDate,
+        endDate: endDate,
+        eventTypes: eventTypes,
+      );
+
+      if (filteredEvents.isEmpty) {
+        return false;
+      }
+
+      _generatedPdf = await PdfService.generateEventsPdf(filteredEvents);
+      return true;
+    } finally {
+      _isGeneratingPdf = false;
+      notifyListeners();
+    }
   }
 }
