@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
+import 'package:share_plus/share_plus.dart';
 
 class PdfService {
   static Future<File> generateEventsPdf(List events) async {
@@ -46,5 +47,13 @@ class PdfService {
     await file.writeAsBytes(await pdf.save());
 
     return file;
+  }
+
+  static Future<void> sendPdfToEmail(File pdf) async {
+    await Share.shareXFiles(
+      [XFile(pdf.path)],
+      subject: 'Informe de eventos',
+      text: 'Adjunto encontrarás tu informe de eventos.',
+    );
   }
 }

@@ -243,4 +243,14 @@ class EventProvider extends ChangeNotifier {
       notifyListeners();
     }
   }
+
+  Future<bool> sendPdfByEmail() async {
+    if(_generatedPdf == null){
+      return false;
+    }
+
+    await PdfService.sendPdfToEmail(_generatedPdf!);
+
+    return true;
+  }
 }

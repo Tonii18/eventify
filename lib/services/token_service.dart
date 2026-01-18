@@ -4,6 +4,7 @@ class TokenService {
   static const _tokenKey = 'auth_token';
 
   static const _userIdKey = 'user_id';
+  static const _userEmailKey = 'user_email';
 
   // Methods to play Token
 
@@ -42,5 +43,10 @@ class TokenService {
   static Future<void> deleteUserId() async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.remove(_userIdKey);
+  }
+
+  static Future<String?> getUserEmail() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString(_userEmailKey);
   }
 }

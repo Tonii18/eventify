@@ -26,7 +26,7 @@ class _UserInformation extends State<UserInformation> {
   };
 
   Future<void> _selectDate(BuildContext context, bool isStartDate) async {
-    final DateTime? picked = await showDatePicker(
+    final picked = await showDatePicker(
       context: context,
       initialDate: DateTime.now(),
       firstDate: DateTime(2020),
@@ -43,11 +43,7 @@ class _UserInformation extends State<UserInformation> {
 
     if (picked != null) {
       setState(() {
-        if (isStartDate) {
-          _startDate = picked;
-        } else {
-          _endDate = picked;
-        }
+        isStartDate ? _startDate = picked : _endDate = picked;
       });
     }
   }
@@ -61,6 +57,8 @@ class _UserInformation extends State<UserInformation> {
       create: (_) => EventProvider(),
       child: Builder(
         builder: (context) {
+          final provider = context.watch<EventProvider>();
+
           return Scaffold(
             backgroundColor: AppColors.greyBackground,
             body: BasePage(
@@ -69,8 +67,7 @@ class _UserInformation extends State<UserInformation> {
                 child: Column(
                   children: [
                     Text(
-                      'Configuracion del Informe',
-                      textAlign: TextAlign.center,
+                      'Configuración del Informe',
                       style: TextStyle(
                         fontSize: 22 * scale,
                         fontWeight: FontWeight.w900,
@@ -104,7 +101,6 @@ class _UserInformation extends State<UserInformation> {
 
                     Text(
                       'Tipos de eventos',
-                      textAlign: TextAlign.center,
                       style: TextStyle(
                         fontSize: 20 * scale,
                         fontWeight: FontWeight.w900,
@@ -117,102 +113,103 @@ class _UserInformation extends State<UserInformation> {
                     Padding(
                       padding: const EdgeInsets.all(20),
                       child: Card(
-                        elevation: 2 * scale,
-                        child: Padding(
-                          padding: EdgeInsets.all(scale),
-                          child: Column(
-                            children: _eventTypes.keys.map((type) {
-                              return CheckboxListTile(
-                                title: Text(
-                                  type.toUpperCase(),
-                                  style: TextStyle(fontSize: 16),
-                                ),
-                                value: _eventTypes[type],
-                                activeColor: AppColors.darkBlue,
-                                onChanged: (bool? value) {
-                                  setState(() {
-                                    _eventTypes[type] = value ?? false;
-                                  });
-                                },
-                              );
-                            }).toList(),
-                          ),
+                        child: Column(
+                          children: _eventTypes.keys.map((type) {
+                            return CheckboxListTile(
+                              title: Text(type.toUpperCase()),
+                              value: _eventTypes[type],
+                              activeColor: AppColors.darkBlue,
+                              onChanged: (value) {
+                                setState(() {
+                                  _eventTypes[type] = value ?? false;
+                                });
+                              },
+                            );
+                          }).toList(),
                         ),
                       ),
                     ),
 
                     SizedBox(height: 20 * scale),
 
-                    Column(
-                      children: [
-                        SizedBox(
-                          width: 375 * scale,
-                          height: 50 * scale,
-                          child: ElevatedButton.icon(
-                            onPressed: () async {
-                              final provider = context.read<EventProvider>();
+                    // 📄 GENERAR PDF
+                    SizedBox(
+                      width: 375 * scale,
+                      height: 50 * scale,
+                      child: ElevatedButton.icon(
+                        icon: const Icon(Icons.picture_as_pdf),
+                        label: const Text('Descargar PDF'),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: AppColors.primaryPurple,
+                        ),
+                        onPressed: () async {
+                          if (_startDate == null || _endDate == null) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text('Selecciona ambas fechas'),
+                              ),
+                            );
+                            return;
+                          }
 
-                              final success = await provider.generatePdfReport(
-                                startDate: _startDate!,
-                                endDate: _endDate!,
-                                eventTypes: _eventTypes,
-                              );
+                          final success =
+                              await context.read<EventProvider>().generatePdfReport(
+                                    startDate: _startDate!,
+                                    endDate: _endDate!,
+                                    eventTypes: _eventTypes,
+                                  );
 
-                              if (!context.mounted) return;
+                          if (!context.mounted) return;
 
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content: Text(
-                                    success
-                                        ? 'PDF generado correctamente'
-                                        : 'No hay eventos que cumplan los criterios',
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(
+                                success
+                                    ? 'PDF generado correctamente'
+                                    : 'No hay eventos que cumplan los criterios',
+                              ),
+                            ),
+                          );
+
+                          final file = provider.generatedPdf;
+                          if (file != null) {
+                            await OpenFilex.open(file.path);
+                          }
+                        },
+                      ),
+                    ),
+
+                    SizedBox(height: 12 * scale),
+
+                    // 📧 ENVIAR EMAIL
+                    SizedBox(
+                      width: 375 * scale,
+                      height: 50 * scale,
+                      child: ElevatedButton.icon(
+                        icon: const Icon(Icons.email),
+                        label: const Text('Enviar PDF por email'),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: AppColors.darkBlue,
+                        ),
+                        onPressed: provider.canSendPdf
+                            ? () async {
+                                final success =
+                                    await context.read<EventProvider>().sendPdfByEmail();
+
+                                if (!context.mounted) return;
+
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text(
+                                      success
+                                          ? 'PDF enviado por email'
+                                          : 'Error enviando el PDF',
+                                    ),
                                   ),
-                                ),
-                              );
-
-                              final file = provider.generatedPdf;
-
-                              if (file != null) {
-                                await OpenFilex.open(file.path);
+                                );
                               }
-                            },
-                            icon: Icon(Icons.picture_as_pdf),
-                            label: Text(
-                              'Descargar PDF',
-                              style: TextStyle(fontSize: 14),
-                            ),
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: AppColors.primaryPurple,
-                              foregroundColor: Colors.white,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                            ),
-                          ),
-                        ),
-
-                        SizedBox(height: 12 * scale),
-
-                        SizedBox(
-                          width: 375 * scale,
-                          height: 50 * scale,
-                          child: ElevatedButton.icon(
-                            onPressed: () {},
-                            icon: Icon(Icons.email),
-                            label: Text(
-                              'Enviar PDF por email',
-                              style: TextStyle(fontSize: 14),
-                            ),
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: AppColors.darkBlue,
-                              foregroundColor: Colors.white,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
+                            : null,
+                      ),
                     ),
                   ],
                 ),
