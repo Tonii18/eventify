@@ -151,7 +151,7 @@ class _UserEvents extends State<UserEvents> {
                                 success
                                     ? 'Evento registrado correctamente'
                                     : provider.registerError ??
-                                          'Error al registrarse',
+                                          'Error al registrar',
                               ),
                             ),
                           );
