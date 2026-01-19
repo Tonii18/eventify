@@ -1,5 +1,6 @@
 import 'package:eventify/providers/auth_provider.dart';
 import 'package:eventify/views/admin/admin_dashboard.dart';
+import 'package:eventify/views/organizer/organizer_home.dart';
 import 'package:eventify/views/users/user_home.dart';
 import 'package:eventify/views/users/user_home_content.dart';
 import 'package:flutter/material.dart';
@@ -20,6 +21,13 @@ class LoginFunctions {
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => UserHome()),
+        );
+      }
+
+      if (authProvider.user?.role == 'o'){
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => OrganizerHome()),
         );
       }
     }
