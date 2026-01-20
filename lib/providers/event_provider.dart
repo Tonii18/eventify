@@ -8,7 +8,6 @@ import 'package:flutter/material.dart';
 
 class EventProvider extends ChangeNotifier {
   // States
-
   final EventService _eventService = EventService();
   bool _isLoading = false;
   String? _errorMessage;
@@ -42,6 +41,20 @@ class EventProvider extends ChangeNotifier {
   File? get generatedPdf => _generatedPdf;
   bool get isGeneratingPdf => _isGeneratingPdf;
   bool get canSendPdf => _generatedPdf != null;
+
+  // States related to events organizer
+
+  List<EventModel> _organizerEvents = [];
+  bool _isLoadingOrganizerEvents = false;
+  bool _isDeletingEvent = false;
+  bool _isCreatingEvent = false;
+  bool _isUpdatingEvent = false;
+
+  List<EventModel> get organizerEvents => _organizerEvents;
+  bool get isLoadingOrganizerEvents => _isLoadingOrganizerEvents;
+  bool get isDeletingEvent => _isDeletingEvent;
+  bool get isCreatingEvent => _isCreatingEvent;
+  bool get isUpdatingEvent => _isUpdatingEvent;
 
   // Functions
 
@@ -245,12 +258,150 @@ class EventProvider extends ChangeNotifier {
   }
 
   Future<bool> sendPdfByEmail() async {
-    if(_generatedPdf == null){
+    if (_generatedPdf == null) {
       return false;
     }
 
     await PdfService.sendPdfToEmail(_generatedPdf!);
 
     return true;
+  }
+
+  Future<bool> loadOrganizerEvents(int organizerId) async {
+    _isLoadingOrganizerEvents = true;
+    _errorMessage = null;
+    notifyListeners();
+
+    try {
+      final allOrganizerEvents = await _eventService.getEventsOrganizer(
+        organizerId,
+      );
+
+      final now = DateTime.now();
+      _organizerEvents = allOrganizerEvents.where((event) {
+        final eventDate = DateTime.parse(event.startTime);
+        return eventDate.isAfter(now);
+      }).toList();
+
+      _organizerEvents.sort((a, b) => a.startTime.compareTo(b.startTime));
+
+      _errorMessage = null;
+      return true;
+    } catch (e) {
+      _organizerEvents = [];
+      _errorMessage = e.toString();
+      return false;
+    } finally {
+      _isLoadingOrganizerEvents = false;
+      notifyListeners();
+    }
+  }
+
+  
+  Future<bool> deleteOrganizerEvent(int eventId, int organizerId) async {
+    _isDeletingEvent = true;
+    _errorMessage = null;
+    notifyListeners();
+
+    try {
+      await _eventService.deleteEventOrganizer(eventId);
+
+      await loadOrganizerEvents(organizerId);
+      return true;
+    } catch (e) {
+      _errorMessage = e.toString();
+      return false;
+    } finally {
+      _isDeletingEvent = false;
+      notifyListeners();
+    }
+  }
+
+  Future<EventModel?> createOrganizerEvent({
+    required int organizerId,
+    required String title,
+    required String description,
+    required int categoryId,
+    required String startTime,
+    required String endTime,
+    required String location,
+    required double price,
+    required String imageUrl,
+  }) async {
+    _isCreatingEvent = true;
+    _errorMessage = null;
+    notifyListeners();
+
+    try {
+      final newEvent = await _eventService.createEventOrganizer(
+        organizerId: organizerId,
+        title: title,
+        description: description,
+        categoryId: categoryId,
+        startTime: startTime,
+        endTime: endTime,
+        location: location,
+        price: price,
+        imageUrl: imageUrl,
+      );
+
+      await loadOrganizerEvents(organizerId);
+      return newEvent;
+    } catch (e) {
+      _errorMessage = e.toString();
+      return null;
+    } finally {
+      _isCreatingEvent = false;
+      notifyListeners();
+    }
+  }
+
+  
+  Future<EventModel?> updateOrganizerEvent({
+    required int id,
+    required int organizerId,
+    required String title,
+    required String description,
+    required int categoryId,
+    required String startTime,
+    required String endTime,
+    required String location,
+    required double latitude,
+    required double longitude,
+    required int maxAttendees,
+    required double price,
+    required String imageUrl,
+  }) async {
+    _isUpdatingEvent = true;
+    _errorMessage = null;
+    notifyListeners();
+
+    try {
+      final updatedEvent = await _eventService.updateEventOrganizer(
+        id: id,
+        organizerId: organizerId,
+        title: title,
+        description: description,
+        categoryId: categoryId,
+        startTime: startTime,
+        endTime: endTime,
+        location: location,
+        latitude: latitude,
+        longitude: longitude,
+        maxAttendees: maxAttendees,
+        price: price,
+        imageUrl: imageUrl,
+      );
+
+      
+      await loadOrganizerEvents(organizerId);
+      return updatedEvent;
+    } catch (e) {
+      _errorMessage = e.toString();
+      return null;
+    } finally {
+      _isUpdatingEvent = false;
+      notifyListeners();
+    }
   }
 }
