@@ -21,17 +21,19 @@ class EventModel {
     this.longitude,
   });
 
+  // We must ensure no field of this model return a null value
+
   factory EventModel.fromJson(Map<String, dynamic> json) {
     return EventModel(
       id: json['id'],
-      title: json['title'],
-      startTime: json['start_time'],
+      title: json['title'] ?? '',
+      startTime: json['start_time'] ?? '',
       endTime: json['end_time'],
-      imageUrl: json['image_url'],
-      category: json['category'],
+      imageUrl: json['image_url'] ?? '',
+      category: json['category'] ?? 'Unknown',
       location: json['location'],
-      latitude: json['latitude'],
-      longitude: json['longitude'],
+      latitude: (json['latitude'] as num?)?.toDouble(),
+      longitude: (json['longitude'] as num?)?.toDouble(),
     );
   }
 }

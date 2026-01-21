@@ -52,7 +52,6 @@ class OrganizerEventCard extends StatelessWidget {
           Container(
             width: width * 0.6,
             height: height * 0.5,
-
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(20),
               color: AppColors.white,
@@ -150,8 +149,8 @@ class OrganizerEventCard extends StatelessWidget {
               style: TextButton.styleFrom(
                 backgroundColor: AppColors.darkBlue,
                 foregroundColor: AppColors.white,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20),
+                shape: ContinuousRectangleBorder(
+                  borderRadius: BorderRadius.circular(30),
                 ),
                 textStyle: TextStyle(
                   fontSize: 20 * scale,

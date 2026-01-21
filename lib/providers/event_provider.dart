@@ -267,6 +267,8 @@ class EventProvider extends ChangeNotifier {
     return true;
   }
 
+  // ORGANIZER FUNCTIONS
+
   Future<bool> loadOrganizerEvents() async {
     _isLoadingOrganizerEvents = true;
     notifyListeners();
