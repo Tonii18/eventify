@@ -16,7 +16,6 @@ class UserHomeContent extends StatefulWidget {
 }
 
 class _UserHomeContentState extends State<UserHomeContent> {
-
   late final EventProvider eventProvider;
 
   @override
@@ -44,9 +43,7 @@ class _UserHomeContentState extends State<UserHomeContent> {
               }
 
               if (provider.errorMessage != null) {
-                return Center(
-                  child: Text('Error: ${provider.errorMessage}'),
-                );
+                return Center(child: Text('Error: ${provider.errorMessage}'));
               }
 
               final events = provider.myEvents;
@@ -59,7 +56,6 @@ class _UserHomeContentState extends State<UserHomeContent> {
 
               return Column(
                 children: [
-                  
                   Text(
                     'Mis eventos',
                     style: TextStyle(
@@ -102,5 +98,4 @@ class _UserHomeContentState extends State<UserHomeContent> {
       ),
     );
   }
-  
 }

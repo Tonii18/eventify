@@ -150,7 +150,7 @@ class EventService {
 
     final response = await http.post(
       Uri.parse('${baseUrl}eventsByOrganizer'),
-      headers: {'Accept': 'application/json', 'Authorization': 'Bearer $token'},
+      headers: {'Accept' : 'application/json', 'Authorization' : 'Bearer $token',},
       body: {'id': organizerId.toString()},
     );
 

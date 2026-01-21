@@ -267,12 +267,18 @@ class EventProvider extends ChangeNotifier {
     return true;
   }
 
-  Future<bool> loadOrganizerEvents(int organizerId) async {
+  Future<bool> loadOrganizerEvents() async {
     _isLoadingOrganizerEvents = true;
-    _errorMessage = null;
     notifyListeners();
 
     try {
+      final organizerIdString = await TokenService.getUserId();
+      if (organizerIdString == null) {
+        throw Exception('Organizador no autenticado');
+      }
+
+      final organizerId = int.parse(organizerIdString);
+
       final allOrganizerEvents = await _eventService.getEventsOrganizer(
         organizerId,
       );
@@ -286,27 +292,23 @@ class EventProvider extends ChangeNotifier {
       _organizerEvents.sort((a, b) => a.startTime.compareTo(b.startTime));
 
       _errorMessage = null;
-      return true;
     } catch (e) {
       _organizerEvents = [];
       _errorMessage = e.toString();
-      return false;
-    } finally {
-      _isLoadingOrganizerEvents = false;
-      notifyListeners();
     }
+    _isLoadingOrganizerEvents = false;
+    notifyListeners();
+    return _organizerEvents.isEmpty;
   }
 
-  
-  Future<bool> deleteOrganizerEvent(int eventId, int organizerId) async {
+  Future<bool> deleteOrganizerEvent(int eventId) async {
     _isDeletingEvent = true;
     _errorMessage = null;
     notifyListeners();
 
     try {
       await _eventService.deleteEventOrganizer(eventId);
-
-      await loadOrganizerEvents(organizerId);
+      await loadOrganizerEvents();
       return true;
     } catch (e) {
       _errorMessage = e.toString();
@@ -318,7 +320,6 @@ class EventProvider extends ChangeNotifier {
   }
 
   Future<EventModel?> createOrganizerEvent({
-    required int organizerId,
     required String title,
     required String description,
     required int categoryId,
@@ -333,6 +334,13 @@ class EventProvider extends ChangeNotifier {
     notifyListeners();
 
     try {
+      final organizerIdString = await TokenService.getUserId();
+      if (organizerIdString == null) {
+        throw Exception('Organizador no autenticado');
+      }
+
+      final organizerId = int.parse(organizerIdString);
+
       final newEvent = await _eventService.createEventOrganizer(
         organizerId: organizerId,
         title: title,
@@ -345,7 +353,7 @@ class EventProvider extends ChangeNotifier {
         imageUrl: imageUrl,
       );
 
-      await loadOrganizerEvents(organizerId);
+      await loadOrganizerEvents();
       return newEvent;
     } catch (e) {
       _errorMessage = e.toString();
@@ -356,10 +364,8 @@ class EventProvider extends ChangeNotifier {
     }
   }
 
-  
   Future<EventModel?> updateOrganizerEvent({
     required int id,
-    required int organizerId,
     required String title,
     required String description,
     required int categoryId,
@@ -377,6 +383,13 @@ class EventProvider extends ChangeNotifier {
     notifyListeners();
 
     try {
+      final organizerIdString = await TokenService.getUserId();
+      if (organizerIdString == null) {
+        throw Exception('Organizador no autenticado');
+      }
+
+      final organizerId = int.parse(organizerIdString);
+
       final updatedEvent = await _eventService.updateEventOrganizer(
         id: id,
         organizerId: organizerId,
@@ -393,8 +406,7 @@ class EventProvider extends ChangeNotifier {
         imageUrl: imageUrl,
       );
 
-      
-      await loadOrganizerEvents(organizerId);
+      await loadOrganizerEvents();
       return updatedEvent;
     } catch (e) {
       _errorMessage = e.toString();
