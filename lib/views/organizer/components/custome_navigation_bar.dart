@@ -23,6 +23,10 @@ class CustomeNavigationBar extends StatelessWidget {
           label: 'Mis eventos',
         ),
         BottomNavigationBarItem(
+          icon: Icon(Icons.add), 
+          label: 'Añadir Evento'
+        ),
+        BottomNavigationBarItem(
           icon: Icon(Icons.pie_chart),
           label: 'Estadísticas',
         ),

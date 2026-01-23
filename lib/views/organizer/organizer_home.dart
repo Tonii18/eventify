@@ -1,5 +1,6 @@
 import 'package:eventify/config/theme.dart';
 import 'package:eventify/views/organizer/components/custome_navigation_bar.dart';
+import 'package:eventify/views/organizer/organizer_form_add_event.dart';
 import 'package:eventify/views/organizer/organizer_home_content.dart';
 import 'package:eventify/views/organizer/organizer_stats.dart';
 import 'package:flutter/material.dart';
@@ -16,6 +17,7 @@ class _OrganizerHomeState extends State<OrganizerHome> {
 
   final List<Widget> widgetsOptions = [
     OrganizerHomeContent(),
+    OrganizerFormAddEvent(),
     OrganizerStats(),
   ];
 

@@ -84,15 +84,6 @@ class _OrganizerHomeContentState extends State<OrganizerHomeContent> {
                             ),
                           ),
                   ),
-
-                  SizedBox(height: 20 * scale),
-
-                  FilledButton.icon(
-                    onPressed: () {},
-                    icon: Icon(Icons.add),
-                    label: Text("Añadir nuevo evento"),
-                    iconAlignment: IconAlignment.start,
-                  ),
                 ],
               );
             },
