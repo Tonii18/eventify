@@ -8,6 +8,7 @@ class EventModel {
   String? location;
   double? latitude;
   double? longitude;
+  DateTime get startDateTime => DateTime.parse(startTime);
 
   EventModel({
     this.id,
@@ -30,7 +31,7 @@ class EventModel {
       startTime: json['start_time'] ?? '',
       endTime: json['end_time'],
       imageUrl: json['image_url'] ?? '',
-      category: json['category'] ?? 'Unknown',
+      category: json['category_name'] ?? 'Unknown',
       location: json['location'],
       latitude: (json['latitude'] as num?)?.toDouble(),
       longitude: (json['longitude'] as num?)?.toDouble(),
