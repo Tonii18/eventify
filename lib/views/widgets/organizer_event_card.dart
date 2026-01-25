@@ -1,8 +1,13 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:eventify/config/theme.dart';
 import 'package:eventify/models/event_model.dart';
+import 'package:eventify/providers/event_provider.dart';
+import 'package:eventify/views/organizer/event_edit_page.dart';
 import 'package:eventify/views/widgets/elevated_button.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class OrganizerEventCard extends StatelessWidget {
   final EventModel event;
@@ -169,7 +174,23 @@ class OrganizerEventCard extends StatelessWidget {
                     textColor: AppColors.greyBackground,
                     fontSize: 15 * scale,
                     fontWeight: FontWeight.w900,
-                    onPressed: () {},
+                    onPressed: () async {
+                      final updated = await Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => ChangeNotifierProvider(
+                            create: (_) => EventProvider(),
+                            child: EventEditPage(event: event),
+                          ),
+                        ),
+                      );
+
+                      if (updated == true) {
+                        // recargar lista de eventos
+                        final provider = context.read<EventProvider>();
+                        provider.loadOrganizerEvents();
+                      }
+                    },
                   ),
                   IconButton(onPressed: () {}, icon: Icon(Icons.delete)),
                 ],

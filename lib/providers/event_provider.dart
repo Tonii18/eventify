@@ -367,7 +367,7 @@ class EventProvider extends ChangeNotifier {
     }
   }
 
-  Future<EventModel?> updateOrganizerEvent({
+  Future<void> updateOrganizerEvent({
     required int id,
     required String title,
     required String description,
@@ -393,7 +393,7 @@ class EventProvider extends ChangeNotifier {
 
       final organizerId = int.parse(organizerIdString);
 
-      final updatedEvent = await _eventService.updateEventOrganizer(
+      await _eventService.updateEventOrganizer(
         id: id,
         organizerId: organizerId,
         title: title,
@@ -410,10 +410,9 @@ class EventProvider extends ChangeNotifier {
       );
 
       await loadOrganizerEvents();
-      return updatedEvent;
     } catch (e) {
       _errorMessage = e.toString();
-      return null;
+      rethrow; // 👈 importante
     } finally {
       _isUpdatingEvent = false;
       notifyListeners();

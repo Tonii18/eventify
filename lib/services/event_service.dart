@@ -223,7 +223,7 @@ class EventService {
     }
   }
 
-  Future<EventModel> updateEventOrganizer({
+  Future<void> updateEventOrganizer({
     required int id,
     required int organizerId,
     required String title,
@@ -263,7 +263,7 @@ class EventService {
     final jsonResponse = jsonDecode(response.body);
 
     if (response.statusCode == 200 && jsonResponse['success'] == true) {
-      return EventModel.fromJson(jsonResponse['data']);
+      return ;
     } else {
       throw Exception(
         jsonResponse['message'] ?? 'Error actualizando el evento',
