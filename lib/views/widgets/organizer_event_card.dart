@@ -186,13 +186,42 @@ class OrganizerEventCard extends StatelessWidget {
                       );
 
                       if (updated == true) {
-                        // recargar lista de eventos
                         final provider = context.read<EventProvider>();
                         provider.loadOrganizerEvents();
                       }
                     },
                   ),
-                  IconButton(onPressed: () {}, icon: Icon(Icons.delete)),
+                  IconButton(
+                    onPressed: () {
+                      final provider = context.read<EventProvider>();
+
+                      showDialog(
+                        context: context,
+                        builder: (dialogContext) => AlertDialog(
+                          title: const Text('Eliminar Evento'),
+                          content: const Text(
+                            '¿Estás seguro de que deseas eliminar este evento?',
+                          ),
+                          actions: [
+                            TextButton(
+                              onPressed: () =>
+                                  Navigator.of(dialogContext).pop(),
+                              child: const Text('Cancelar'),
+                            ),
+                            TextButton(
+                              onPressed: () async {
+                                await provider.deleteOrganizerEvent(event.id!);
+                                Navigator.of(dialogContext).pop();
+                                provider.loadOrganizerEvents();
+                              },
+                              child: const Text('Eliminar'),
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                    icon: Icon(Icons.delete),
+                  ),
                 ],
               ),
             ),

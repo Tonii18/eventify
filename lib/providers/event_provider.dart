@@ -322,7 +322,6 @@ class EventProvider extends ChangeNotifier {
   }
 
   Future<EventModel?> createOrganizerEvent({
-    required int organizerId,
     required String title,
     required String description,
     required int categoryId,

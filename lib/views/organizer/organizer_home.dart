@@ -18,14 +18,16 @@ class _OrganizerHomeState extends State<OrganizerHome> {
   int selectedIndex = 0;
 
   final List<Widget> widgetsOptions = [
-  OrganizerHomeContent(),
-  OrganizerFormAddEvent(),
-  ChangeNotifierProvider(
-    create: (_) => EventProvider()..loadOrganizerEvents(),
-    child: OrganizerStats(),
-  ),
-];
-
+    OrganizerHomeContent(),
+    ChangeNotifierProvider(
+      create: (_) => EventProvider()..loadOrganizerEvents(),
+      child: OrganizerFormAddEvent(),
+    ),
+    ChangeNotifierProvider(
+      create: (_) => EventProvider()..loadOrganizerEvents(),
+      child: OrganizerStats(),
+    ),
+  ];
 
   void onNavTapped(int index) {
     setState(() {
