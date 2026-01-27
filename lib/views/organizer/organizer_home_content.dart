@@ -15,13 +15,13 @@ class OrganizerHomeContent extends StatefulWidget {
 }
 
 class _OrganizerHomeContentState extends State<OrganizerHomeContent> {
-  late final EventProvider eventProvider;
+  late final EventProvider _eventProvider;
 
   @override
   void initState() {
     super.initState();
-    eventProvider = EventProvider();
-    eventProvider.loadOrganizerEvents();
+    _eventProvider = EventProvider();
+    _eventProvider.loadOrganizerEvents();
   }
 
   @override
@@ -30,7 +30,7 @@ class _OrganizerHomeContentState extends State<OrganizerHomeContent> {
     final scale = size.width / 400;
 
     return ChangeNotifierProvider<EventProvider>.value(
-      value: eventProvider,
+      value: _eventProvider,
       child: Scaffold(
         backgroundColor: AppColors.greyBackground,
         body: BasePage(
@@ -63,7 +63,7 @@ class _OrganizerHomeContentState extends State<OrganizerHomeContent> {
                   Expanded(
                     child: events.isEmpty
                         ? const Center(
-                            child: Text('No has creado ningun Evento'),
+                            child: Text('No has creado ningún evento'),
                           )
                         : CarouselSlider.builder(
                             itemCount: events.length,

@@ -210,9 +210,13 @@ class OrganizerEventCard extends StatelessWidget {
                             ),
                             TextButton(
                               onPressed: () async {
-                                await provider.deleteOrganizerEvent(event.id!);
-                                Navigator.of(dialogContext).pop();
-                                provider.loadOrganizerEvents();
+                                await context
+                                    .read<EventProvider>()
+                                    .deleteOrganizerEvent(event.id!);
+
+                                if (dialogContext.mounted) {
+                                  Navigator.of(dialogContext).pop();
+                                }
                               },
                               child: const Text('Eliminar'),
                             ),

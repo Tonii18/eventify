@@ -310,7 +310,7 @@ class EventProvider extends ChangeNotifier {
 
     try {
       await _eventService.deleteEventOrganizer(eventId);
-      await loadOrganizerEvents();
+      organizerEvents.removeWhere((e) => e.id == eventId);
       return true;
     } catch (e) {
       _errorMessage = e.toString();
